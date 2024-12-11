@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace baitapbuoi4
+{
+    public partial class ListView : Form
+    {
+        public ListView()
+        {
+            InitializeComponent();
+
+        }
+
+        private void btnthem_Click(object sender, EventArgs e)
+        {
+            Form1 employeeForm = new Form1();
+            if (employeeForm.ShowDialog() == DialogResult.OK)
+            {
+                
+                ListViewItem newItem = new ListViewItem(new string[] {
+                    employeeForm.manv,
+                    employeeForm.tennv,
+                    employeeForm.luongcb.ToString("N0") 
+                });
+                listView2.Items.Add(newItem);
+            }
+        }
+
+        private void btnxoa_Click(object sender, EventArgs e)
+        {
+            if (listView2.SelectedItems.Count > 0)
+            {
+                listView2.Items.Remove(listView2.SelectedItems[0]);
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một nhân viên để xóa.");
+            }
+        }
+
+        private void btndong_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnsua_Click(object sender, EventArgs e)
+        {
+            
+            if (listView2.SelectedItems.Count > 0)
+            {
+                
+                ListViewItem selectedItem = listView2.SelectedItems[0];
+                Form1 employeeForm = new Form1();
+
+                employeeForm.manv = selectedItem.SubItems[0].Text;
+                employeeForm.tennv = selectedItem.SubItems[1].Text;
+
+    
+                if (decimal.TryParse(selectedItem.SubItems[2].Text, out decimal luong))
+                {
+                    employeeForm.luongcb = luong;
+                }
+                if (employeeForm.ShowDialog() == DialogResult.OK)
+                {
+                    selectedItem.SubItems[1].Text = employeeForm.tennv;
+                    selectedItem.SubItems[2].Text = employeeForm.luongcb.ToString("N0");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một nhân viên để sửa.");
+            }
+        }
+    }
+}
